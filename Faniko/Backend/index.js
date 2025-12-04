@@ -7,16 +7,11 @@ const fs = require("fs");
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-
 // Allow JSON bodies (for some endpoints)
 app.use(express.json());
 
-// Allow frontend
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-  })
-);
+// Allow frontend (MVP: allow all origins so localhost + Render work)
+app.use(cors());
 
 // Ensure uploads folder
 const uploadsDir = path.join(__dirname, "uploads");
@@ -808,6 +803,35 @@ app.get("/api/creators/:username/earnings", (req, res) => {
       allTime: total,
     },
     transactions: creatorTx,
+  });
+});
+
+//
+// 🔥 MVP ADMIN RESET ENDPOINT
+//
+app.post("/api/admin/reset-mvp", (req, res) => {
+  // You can pass key either as:
+  //  - query:  /api/admin/reset-mvp?key=SECRET
+  //  - header: x-admin-reset-key: SECRET
+  const key = req.query.key || req.headers["x-admin-reset-key"];
+
+  if (!process.env.ADMIN_RESET_KEY || key !== process.env.ADMIN_RESET_KEY) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+
+  // Clear all in-memory stores
+  users.length = 0;
+  creators.length = 0;
+  posts.length = 0;
+  transactions.length = 0;
+  subscriptions.length = 0;
+  unlockedPosts.length = 0;
+
+  console.log("🔄 MVP data reset via /api/admin/reset-mvp");
+
+  res.json({
+    success: true,
+    message: "All in-memory MVP data cleared.",
   });
 });
 
