@@ -784,7 +784,7 @@ app.all("/api/admin/reset-demo", (req, res) => {
   subscriptions.length = 0;
   unlockedPosts.length = 0;
 
-  console.log(⚠️ Demo reset triggered via /api/admin/reset-demo");
+  console.log("Demo reset triggered via /api/admin/reset-demo");
   res.json({ success: true, message: "Demo reset complete" });
 });
 
