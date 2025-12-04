@@ -1,6 +1,7 @@
 // src/pages/CreatorDashboard.tsx
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { API_BASE_URL } from "../apiConfig";
 
 type AccountType = "free" | "subscription";
 type Visibility = "free" | "ppv";
@@ -26,7 +27,7 @@ type CreatorPost = {
   mediaFilename?: string | null;
   mediaMime?: string | null;
 
-  // NEW: like info from backend (optional)
+  // like info from backend (optional)
   likes?: number;
   likedBy?: string[];
 };
@@ -71,14 +72,14 @@ export default function CreatorDashboard() {
   const [earningsLoading, setEarningsLoading] = useState(false);
   const [earningsError, setEarningsError] = useState<string | null>(null);
 
-  // 🔹 profile edit state (free ↔ subscription + price)
+  // profile edit state (free ↔ subscription + price)
   const [accountTypeForm, setAccountTypeForm] = useState<AccountType>("free");
   const [subscriptionPriceForm, setSubscriptionPriceForm] =
     useState<string>("9.99");
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileMessage, setProfileMessage] = useState<string | null>(null);
 
-  // 🔹 post edit state
+  // post edit state
   const [editingPostId, setEditingPostId] = useState<number | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
@@ -97,7 +98,7 @@ export default function CreatorDashboard() {
 
         // load creator
         const creatorRes = await fetch(
-          `http://localhost:4000/api/creators/${encodeURIComponent(username)}`
+          `${API_BASE_URL}/api/creators/${encodeURIComponent(username || "")}`
         );
         if (!creatorRes.ok) {
           if (creatorRes.status === 404) {
@@ -121,8 +122,8 @@ export default function CreatorDashboard() {
 
         // load posts
         const postsRes = await fetch(
-          `http://localhost:4000/api/creators/${encodeURIComponent(
-            username
+          `${API_BASE_URL}/api/creators/${encodeURIComponent(
+            username || ""
           )}/posts`
         );
         if (!postsRes.ok) {
@@ -137,8 +138,8 @@ export default function CreatorDashboard() {
           setEarningsError(null);
 
           const earningsRes = await fetch(
-            `http://localhost:4000/api/creators/${encodeURIComponent(
-              username
+            `${API_BASE_URL}/api/creators/${encodeURIComponent(
+              username || ""
             )}/earnings`
           );
 
@@ -214,8 +215,8 @@ export default function CreatorDashboard() {
       }
 
       const res = await fetch(
-        `http://localhost:4000/api/creators/${encodeURIComponent(
-          username
+        `${API_BASE_URL}/api/creators/${encodeURIComponent(
+          username || ""
         )}/posts`,
         {
           method: "POST",
@@ -253,7 +254,7 @@ export default function CreatorDashboard() {
     }
   }
 
-  // 🔹 save profile (free/subscription + price)
+  // save profile (free/subscription + price)
   async function handleSaveProfile(e: React.FormEvent) {
     e.preventDefault();
     if (!username || !creator) return;
@@ -271,7 +272,7 @@ export default function CreatorDashboard() {
       }
 
       const res = await fetch(
-        `http://localhost:4000/api/creators/${encodeURIComponent(username)}`,
+        `${API_BASE_URL}/api/creators/${encodeURIComponent(username || "")}`,
         {
           method: "PATCH",
           headers: {
@@ -314,7 +315,7 @@ export default function CreatorDashboard() {
     }
   }
 
-  // 🔹 start editing a specific post
+  // start editing a specific post
   function handleStartEditPost(post: CreatorPost) {
     setEditingPostId(post.id);
     setEditTitle(post.title || "");
@@ -352,8 +353,8 @@ export default function CreatorDashboard() {
       }
 
       const res = await fetch(
-        `http://localhost:4000/api/creators/${encodeURIComponent(
-          username
+        `${API_BASE_URL}/api/creators/${encodeURIComponent(
+          username || ""
         )}/posts/${editingPostId}`,
         {
           method: "PATCH",
@@ -389,7 +390,7 @@ export default function CreatorDashboard() {
     }
   }
 
-  // 🔹 delete a post
+  // delete a post
   async function handleDeletePost(postId: number) {
     if (!username) return;
 
@@ -400,8 +401,8 @@ export default function CreatorDashboard() {
 
     try {
       const res = await fetch(
-        `http://localhost:4000/api/creators/${encodeURIComponent(
-          username
+        `${API_BASE_URL}/api/creators/${encodeURIComponent(
+          username || ""
         )}/posts/${postId}`,
         {
           method: "DELETE",
@@ -435,7 +436,7 @@ export default function CreatorDashboard() {
   const last30 = earnings?.last30Days ?? 0;
   const lifetime = earnings?.lifetime ?? 0;
 
-  // NEW: most liked post for overview widget
+  // most liked post for overview widget
   const mostLikedPost: CreatorPost | null =
     posts.length === 0
       ? null
@@ -505,7 +506,7 @@ export default function CreatorDashboard() {
               Explore
             </Link>
             <Link
-              to={`/c/${encodeURIComponent(username)}`}
+              to={`/c/${encodeURIComponent(username || "")}`}
               className="hover:text-brand-700"
             >
               View profile
@@ -799,7 +800,7 @@ export default function CreatorDashboard() {
                             </p>
                           )}
 
-                          {/* NEW: likes row */}
+                          {/* likes row */}
                           <p className="mt-0.5 text-[11px] text-gray-500 flex items-center gap-1">
                             <span
                               className={
@@ -1034,7 +1035,7 @@ export default function CreatorDashboard() {
                 </div>
               )}
 
-              {/* NEW: most liked post snippet */}
+              {/* most liked post snippet */}
               {mostLikedPost && (
                 <div className="mt-3 border-t border-gray-200 pt-2">
                   <p className="text-[11px] text-gray-500 mb-1">

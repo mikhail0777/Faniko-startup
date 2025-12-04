@@ -106,7 +106,7 @@ export default function CreatorProfile() {
 
         // 1) Load creator
         const creatorRes = await fetch(
-          `${API_BASE_URL}/api/creators/${encodeURIComponent(username)}`
+          `${API_BASE_URL}/api/creators/${encodeURIComponent(username || "")}`
         );
         if (!creatorRes.ok) {
           if (creatorRes.status === 404) {
@@ -120,7 +120,7 @@ export default function CreatorProfile() {
         // 2) Load posts
         const postsRes = await fetch(
           `${API_BASE_URL}/api/creators/${encodeURIComponent(
-            username
+            username || ""
           )}/posts`
         );
         if (!postsRes.ok) {
@@ -160,7 +160,7 @@ export default function CreatorProfile() {
         setEarningsLoading(true);
         const earningsRes = await fetch(
           `${API_BASE_URL}/api/creators/${encodeURIComponent(
-            username
+            username || ""
           )}/earnings`
         );
         if (earningsRes.ok) {
@@ -231,7 +231,7 @@ export default function CreatorProfile() {
     try {
       const res = await fetch(
         `${API_BASE_URL}/api/creators/${encodeURIComponent(
-          username
+          username || ""
         )}/posts/${postId}/like`,
         {
           method: "POST",
@@ -290,7 +290,9 @@ export default function CreatorProfile() {
 
     try {
       const res = await fetch(
-        `${API_BASE_URL}/api/creators/${encodeURIComponent(username)}/tips`,
+        `${API_BASE_URL}/api/creators/${encodeURIComponent(
+          username || ""
+        )}/tips`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -339,7 +341,7 @@ export default function CreatorProfile() {
     }
 
     const budgetNum = Number(requestBudget || "0");
-    if (Number.isNaN(budgetNum) || budgetNum <= 0) {
+       if (Number.isNaN(budgetNum) || budgetNum <= 0) {
       alert("Please enter a valid budget.");
       return;
     }
@@ -377,7 +379,7 @@ export default function CreatorProfile() {
     try {
       const res = await fetch(
         `${API_BASE_URL}/api/creators/${encodeURIComponent(
-          username
+          username || ""
         )}/posts/${postId}/unlock`,
         {
           method: "POST",
@@ -423,7 +425,7 @@ export default function CreatorProfile() {
     try {
       const res = await fetch(
         `${API_BASE_URL}/api/creators/${encodeURIComponent(
-          username
+          username || ""
         )}/subscribe`,
         {
           method: "POST",
@@ -1085,4 +1087,3 @@ export default function CreatorProfile() {
     </div>
   );
 }
-
