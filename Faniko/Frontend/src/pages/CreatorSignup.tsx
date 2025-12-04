@@ -1,6 +1,7 @@
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import { API_BASE_URL } from "../apiConfig"; // ✅ NEW
 
 type AccountType = "free" | "subscription";
 
@@ -209,7 +210,7 @@ export default function CreatorSignup() {
 
       // ✅ If logged in, verify password against real auth backend first
       if (isLoggedIn) {
-        const loginRes = await fetch("http://localhost:4000/api/auth/login", {
+        const loginRes = await fetch(`${API_BASE_URL}/api/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -245,7 +246,7 @@ export default function CreatorSignup() {
       formData.append("idBack", idBack);
       formData.append("selfie", selfie);
 
-      const response = await fetch("http://localhost:4000/api/creators", {
+      const response = await fetch(`${API_BASE_URL}/api/creators`, {
         method: "POST",
         body: formData,
       });

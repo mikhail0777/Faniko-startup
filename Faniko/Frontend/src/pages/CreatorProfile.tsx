@@ -2,6 +2,7 @@
 import React, { useEffect, useState, FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import { API_BASE_URL } from "../apiConfig";
 
 type AccountType = "free" | "subscription";
 type Visibility = "free" | "ppv";
@@ -105,7 +106,7 @@ export default function CreatorProfile() {
 
         // 1) Load creator
         const creatorRes = await fetch(
-          `http://localhost:4000/api/creators/${encodeURIComponent(username)}`
+          `${API_BASE_URL}/api/creators/${encodeURIComponent(username)}`
         );
         if (!creatorRes.ok) {
           if (creatorRes.status === 404) {
@@ -118,7 +119,7 @@ export default function CreatorProfile() {
 
         // 2) Load posts
         const postsRes = await fetch(
-          `http://localhost:4000/api/creators/${encodeURIComponent(
+          `${API_BASE_URL}/api/creators/${encodeURIComponent(
             username
           )}/posts`
         );
@@ -158,7 +159,7 @@ export default function CreatorProfile() {
       try {
         setEarningsLoading(true);
         const earningsRes = await fetch(
-          `http://localhost:4000/api/creators/${encodeURIComponent(
+          `${API_BASE_URL}/api/creators/${encodeURIComponent(
             username
           )}/earnings`
         );
@@ -229,7 +230,7 @@ export default function CreatorProfile() {
 
     try {
       const res = await fetch(
-        `http://localhost:4000/api/creators/${encodeURIComponent(
+        `${API_BASE_URL}/api/creators/${encodeURIComponent(
           username
         )}/posts/${postId}/like`,
         {
@@ -289,9 +290,7 @@ export default function CreatorProfile() {
 
     try {
       const res = await fetch(
-        `http://localhost:4000/api/creators/${encodeURIComponent(
-          username
-        )}/tips`,
+        `${API_BASE_URL}/api/creators/${encodeURIComponent(username)}/tips`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -377,7 +376,7 @@ export default function CreatorProfile() {
 
     try {
       const res = await fetch(
-        `http://localhost:4000/api/creators/${encodeURIComponent(
+        `${API_BASE_URL}/api/creators/${encodeURIComponent(
           username
         )}/posts/${postId}/unlock`,
         {
@@ -423,7 +422,7 @@ export default function CreatorProfile() {
 
     try {
       const res = await fetch(
-        `http://localhost:4000/api/creators/${encodeURIComponent(
+        `${API_BASE_URL}/api/creators/${encodeURIComponent(
           username
         )}/subscribe`,
         {
@@ -473,7 +472,7 @@ export default function CreatorProfile() {
       );
     }
 
-    const url = `http://localhost:4000/uploads/${post.mediaFilename}`;
+    const url = `${API_BASE_URL}/uploads/${post.mediaFilename}`;
     const isImage = post.mediaMime?.startsWith("image/");
     const isVideo = post.mediaMime?.startsWith("video/");
 
@@ -866,7 +865,9 @@ export default function CreatorProfile() {
                               onClick={() =>
                                 canUnlock ? handleUnlockPost(post.id) : undefined
                               }
-                              disabled={unlockingPostId === post.id || !canUnlock}
+                              disabled={
+                                unlockingPostId === post.id || !canUnlock
+                              }
                               className="mt-3 rounded-2xl bg-white/90 text-gray-900 text-xs font-semibold px-4 py-2 hover:bg-white disabled:opacity-60"
                             >
                               {canUnlock

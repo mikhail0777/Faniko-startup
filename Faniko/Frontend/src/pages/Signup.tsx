@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import { API_BASE_URL } from "../apiConfig";
 
 export default function Signup() {
   const { signup } = useAuth();
@@ -70,7 +71,7 @@ export default function Signup() {
 
     try {
       // 🔹 Call real backend signup so we can enforce unique email/username
-      const res = await fetch("http://localhost:4000/api/auth/signup", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -244,4 +245,5 @@ export default function Signup() {
     </div>
   );
 }
+
 

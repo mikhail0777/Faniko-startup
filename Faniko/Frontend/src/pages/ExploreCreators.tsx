@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../apiConfig";
 
 type AccountType = "free" | "subscription";
 
@@ -27,7 +28,7 @@ export default function ExploreCreators() {
         setLoading(true);
         setError(null);
 
-        const res = await fetch("http://localhost:4000/api/creators");
+        const res = await fetch(`${API_BASE_URL}/api/creators`);
         if (!res.ok) throw new Error("Failed to load creators");
 
         const data = await res.json();
@@ -174,8 +175,7 @@ export default function ExploreCreators() {
 
         {error && (
           <p className="mt-8 text-red-600 text-sm">
-            {error} – is the backend running on{" "}
-            <code>http://localhost:4000</code>?
+            {error} – check your API at <code>{API_BASE_URL}</code>.
           </p>
         )}
 
@@ -269,14 +269,14 @@ export default function ExploreCreators() {
                   </div>
                 </div>
 
-              <div className="mt-4">
-  <Link
-    to={`/c/${encodeURIComponent(c.username)}`}
-    className="block w-full text-center rounded-xl border border-gray-200 text-xs font-semibold py-2 text-gray-700 hover:bg-gray-50"
-  >
-    View profile
-  </Link>
-</div>
+                <div className="mt-4">
+                  <Link
+                    to={`/c/${encodeURIComponent(c.username)}`}
+                    className="block w-full text-center rounded-xl border border-gray-200 text-xs font-semibold py-2 text-gray-700 hover:bg-gray-50"
+                  >
+                    View profile
+                  </Link>
+                </div>
               </div>
             ))}
           </div>
