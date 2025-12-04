@@ -765,6 +765,30 @@ app.post("/api/creators/:username/subscribe", (req, res) => {
   });
 });
 
+// ✅ DEMO RESET ENDPOINT (owner-only, uses ADMIN_RESET_KEY env var)
+app.all("/api/admin/reset-demo", (req, res) => {
+  const key =
+    req.query.key ||
+    (req.body && req.body.key) ||
+    req.headers["x-admin-reset-key"];
+
+  if (!key || key !== process.env.ADMIN_RESET_KEY) {
+    return res.status(403).json({ success: false, error: "Forbidden" });
+  }
+
+  // Wipe all in-memory demo data
+  users.length = 0;
+  creators.length = 0;
+  posts.length = 0;
+  transactions.length = 0;
+  subscriptions.length = 0;
+  unlockedPosts.length = 0;
+
+  console.log(⚠️ Demo reset triggered via /api/admin/reset-demo");
+  res.json({ success: true, message: "Demo reset complete" });
+});
+
+
 // ✅ 4) Earnings summary for a creator
 app.get("/api/creators/:username/earnings", (req, res) => {
   const username = req.params.username.toLowerCase();
