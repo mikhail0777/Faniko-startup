@@ -48,6 +48,186 @@ const transactions = []; // tips, PPV unlocks, subscriptions
 const subscriptions = []; // active subscriptions
 const unlockedPosts = []; // which fan unlocked which PPV post
 
+// 🚀 Seed demo creators + posts
+function seedDemoData() {
+  const now = new Date().toISOString();
+
+  // 1st creator: Cameron Fitness
+  const cameron = {
+    id: 1,
+    displayName: "Cameron Fitness",
+    username: "camron_ftness", // lowercased / normalized
+    email: "cameron.fitness@example.com",
+    accountType: "free",
+    price: null,
+    idFrontPath: null,
+    idBackPath: null,
+    selfiePath: null,
+    createdAt: now,
+    status: "approved",
+    isSeed: true,
+  };
+
+  // 2nd creator: Gena Does Art
+  const gena = {
+    id: 2,
+    displayName: "Gena Does Art",
+    username: "genart", // normalized
+    email: "gena.art@example.com",
+    accountType: "free",
+    price: null,
+    idFrontPath: null,
+    idBackPath: null,
+    selfiePath: null,
+    createdAt: now,
+    status: "approved",
+    isSeed: true,
+  };
+
+  // 3rd creator: Computer coding class
+  const coding = {
+    id: 3,
+    displayName: "Computer coding class",
+    username: "learncodingwithmax", // normalized
+    email: "max.coding@example.com",
+    accountType: "subscription",
+    price: 3.0,
+    idFrontPath: null,
+    idBackPath: null,
+    selfiePath: null,
+    createdAt: now,
+    status: "approved",
+    isSeed: true,
+  };
+
+  creators.push(cameron, gena, coding);
+
+  // Posts for Cameron Fitness
+  const camPosts = [
+    {
+      id: 1,
+      creatorId: cameron.id,
+      username: cameron.username,
+      title: "Quick run today, Feel good!!!",
+      visibility: "free",
+      price: null,
+      description:
+        "Ran a 5k in 20:45, not bad, each day getting better!!",
+      createdAt: now,
+      mediaFilename: "Recording 2025-12-05 160008",
+      mediaMime: null,
+      likes: 0,
+      likedBy: [],
+      isSeed: true,
+    },
+    {
+      id: 2,
+      creatorId: cameron.id,
+      username: cameron.username,
+      title: "group platies session",
+      visibility: "ppv",
+      price: 2.0,
+      description:
+        "if you want the group platies session, and my platies program, just buy and see the video, that will give you hours of platies footage and how to videos all for the low price of $2",
+      createdAt: now,
+      mediaFilename: "Recording 2025-12-05 160940",
+      mediaMime: null,
+      likes: 0,
+      likedBy: [],
+      isSeed: true,
+    },
+    {
+      id: 3,
+      creatorId: cameron.id,
+      username: cameron.username,
+      title: "On the rings today",
+      visibility: "free",
+      price: null,
+      description: "Getting ready for competition!",
+      createdAt: now,
+      mediaFilename: "Recording 2025-12-05 161947",
+      mediaMime: null,
+      likes: 0,
+      likedBy: [],
+      isSeed: true,
+    },
+  ];
+
+  // Posts for Gena Does Art
+  const genaPosts = [
+    {
+      id: 4,
+      creatorId: gena.id,
+      username: gena.username,
+      title: "Drawing realistic eyes tutorial",
+      visibility: "free",
+      price: null,
+      description:
+        "Todays video i will show you how to draw realistic sketch of human eyes",
+      createdAt: now,
+      mediaFilename: "Recording 2025-12-05 162739",
+      mediaMime: null,
+      likes: 0,
+      likedBy: [],
+      isSeed: true,
+    },
+    {
+      id: 5,
+      creatorId: gena.id,
+      username: gena.username,
+      title: "How to use your art tools",
+      visibility: "free",
+      price: null,
+      description:
+        "today we will go over all the tools artists should have and how to use them",
+      createdAt: now,
+      mediaFilename: "Recording 2025-12-05 163137",
+      mediaMime: null,
+      likes: 0,
+      likedBy: [],
+      isSeed: true,
+    },
+    {
+      id: 6,
+      creatorId: gena.id,
+      username: gena.username,
+      title: "Dog drawing today",
+      visibility: "free",
+      price: null,
+      description:
+        "drew this dog i saw today, what do you guys think?",
+      createdAt: now,
+      mediaFilename: "Sketch-Drawing-of-Animal",
+      mediaMime: null,
+      likes: 0,
+      likedBy: [],
+      isSeed: true,
+    },
+    {
+      id: 7,
+      creatorId: gena.id,
+      username: gena.username,
+      title: "super hero drawing",
+      visibility: "ppv",
+      price: 0.99,
+      description:
+        "here is a super hero concept i drew for a new marvel super hero",
+      createdAt: now,
+      mediaFilename: "SuperHero",
+      mediaMime: null,
+      likes: 0,
+      likedBy: [],
+      isSeed: true,
+    },
+  ];
+
+  // No posts for coding (subscription-only preview)
+
+  posts.push(...camPosts, ...genaPosts);
+
+  console.log("🌱 Seeded demo creators and posts");
+}
+
 // ✅ Root: friendly message
 app.get("/", (req, res) => {
   res.send(
@@ -807,7 +987,7 @@ app.get("/api/creators/:username/earnings", (req, res) => {
 });
 
 //
-// 🔥 SINGLE ADMIN RESET ENDPOINT
+// 🔥 SINGLE ADMIN RESET ENDPOINT (with reseed)
 //
 app.post("/api/admin/reset", (req, res) => {
   const key =
@@ -827,14 +1007,21 @@ app.post("/api/admin/reset", (req, res) => {
   subscriptions.length = 0;
   unlockedPosts.length = 0;
 
-  console.log("🔄 Admin reset triggered via /api/admin/reset");
+  // Reseed demo data
+  seedDemoData();
+
+  console.log("🔄 Admin reset triggered via /api/admin/reset (with reseed)");
 
   res.json({
     success: true,
-    message: "All in-memory data cleared.",
+    message: "All in-memory data cleared and demo data reseeded.",
   });
 });
+
+// 🌱 Initial seed on startup
+seedDemoData();
 
 app.listen(PORT, () => {
   console.log(`Faniko backend running on http://localhost:${PORT}`);
 });
+
