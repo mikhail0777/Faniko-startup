@@ -4,6 +4,10 @@ Mikhail Simanian — Full-Stack Developer / Student Entrepreneur
 📍 Ottawa, Canada, Carleton University
 📧 miksim077@gmail.com
 
+Live Demo:
+Backend(not needed to open)->   https://faniko-startup.onrender.com/ 
+Front end->  https://faniko-startup-frontend-gflu.onrender.com/
+
 # 🌟 “Faniko — a creator subscription platform that enables influencers to monetize exclusive content like X and Instagram but an intimate connection with the creator like patreon. Built full-stack with React/TypeScript + Node/Express.”
 
 It enables creators to post exclusive content while fans can subscribe, tip, and unlock pay-per-view posts.
