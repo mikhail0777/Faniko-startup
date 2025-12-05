@@ -56,7 +56,7 @@ function seedDemoData() {
   const cameron = {
     id: 1,
     displayName: "Cameron Fitness",
-    username: "camron_ftness", // lowercased / normalized
+    username: "camron_ftness", // normalized (lowercase + underscore)
     email: "cameron.fitness@example.com",
     accountType: "free",
     price: null,
@@ -72,7 +72,7 @@ function seedDemoData() {
   const gena = {
     id: 2,
     displayName: "Gena Does Art",
-    username: "genart", // normalized
+    username: "genart",
     email: "gena.art@example.com",
     accountType: "free",
     price: null,
@@ -88,7 +88,7 @@ function seedDemoData() {
   const coding = {
     id: 3,
     displayName: "Computer coding class",
-    username: "learncodingwithmax", // normalized
+    username: "learncodingwithmax",
     email: "max.coding@example.com",
     accountType: "subscription",
     price: 3.0,
@@ -102,7 +102,7 @@ function seedDemoData() {
 
   creators.push(cameron, gena, coding);
 
-  // Posts for Cameron Fitness
+  // Posts for Cameron Fitness (videos)
   const camPosts = [
     {
       id: 1,
@@ -114,8 +114,8 @@ function seedDemoData() {
       description:
         "Ran a 5k in 20:45, not bad, each day getting better!!",
       createdAt: now,
-      mediaFilename: "Recording 2025-12-05 160008",
-      mediaMime: null,
+      mediaFilename: "Recording 2025-12-05 160008.mp4",
+      mediaMime: "video/mp4",
       likes: 0,
       likedBy: [],
       isSeed: true,
@@ -130,8 +130,8 @@ function seedDemoData() {
       description:
         "if you want the group platies session, and my platies program, just buy and see the video, that will give you hours of platies footage and how to videos all for the low price of $2",
       createdAt: now,
-      mediaFilename: "Recording 2025-12-05 160940",
-      mediaMime: null,
+      mediaFilename: "Recording 2025-12-05 160940.mp4",
+      mediaMime: "video/mp4",
       likes: 0,
       likedBy: [],
       isSeed: true,
@@ -145,15 +145,15 @@ function seedDemoData() {
       price: null,
       description: "Getting ready for competition!",
       createdAt: now,
-      mediaFilename: "Recording 2025-12-05 161947",
-      mediaMime: null,
+      mediaFilename: "Recording 2025-12-05 161947.mp4",
+      mediaMime: "video/mp4",
       likes: 0,
       likedBy: [],
       isSeed: true,
     },
   ];
 
-  // Posts for Gena Does Art
+  // Posts for Gena Does Art (videos + images)
   const genaPosts = [
     {
       id: 4,
@@ -165,8 +165,8 @@ function seedDemoData() {
       description:
         "Todays video i will show you how to draw realistic sketch of human eyes",
       createdAt: now,
-      mediaFilename: "Recording 2025-12-05 162739",
-      mediaMime: null,
+      mediaFilename: "Recording 2025-12-05 162739.mp4",
+      mediaMime: "video/mp4",
       likes: 0,
       likedBy: [],
       isSeed: true,
@@ -181,8 +181,8 @@ function seedDemoData() {
       description:
         "today we will go over all the tools artists should have and how to use them",
       createdAt: now,
-      mediaFilename: "Recording 2025-12-05 163137",
-      mediaMime: null,
+      mediaFilename: "Recording 2025-12-05 163137.mp4",
+      mediaMime: "video/mp4",
       likes: 0,
       likedBy: [],
       isSeed: true,
@@ -197,8 +197,8 @@ function seedDemoData() {
       description:
         "drew this dog i saw today, what do you guys think?",
       createdAt: now,
-      mediaFilename: "Sketch-Drawing-of-Animal",
-      mediaMime: null,
+      mediaFilename: "Sketch-Drawing-of-Animal.jpg",
+      mediaMime: "image/jpeg",
       likes: 0,
       likedBy: [],
       isSeed: true,
@@ -213,15 +213,15 @@ function seedDemoData() {
       description:
         "here is a super hero concept i drew for a new marvel super hero",
       createdAt: now,
-      mediaFilename: "SuperHero",
-      mediaMime: null,
+      mediaFilename: "SuperHero.jpg",
+      mediaMime: "image/jpeg",
       likes: 0,
       likedBy: [],
       isSeed: true,
     },
   ];
 
-  // No posts for coding (subscription-only preview)
+  // No public posts for coding (subscription-only vibe)
 
   posts.push(...camPosts, ...genaPosts);
 
