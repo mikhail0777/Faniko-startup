@@ -765,30 +765,6 @@ app.post("/api/creators/:username/subscribe", (req, res) => {
   });
 });
 
-// ✅ DEMO RESET ENDPOINT (owner-only, uses ADMIN_RESET_KEY env var)
-app.all("/api/admin/reset-demo", (req, res) => {
-  const key =
-    req.query.key ||
-    (req.body && req.body.key) ||
-    req.headers["x-admin-reset-key"];
-
-  if (!key || key !== process.env.ADMIN_RESET_KEY) {
-    return res.status(403).json({ success: false, error: "Forbidden" });
-  }
-
-  // Wipe all in-memory demo data
-  users.length = 0;
-  creators.length = 0;
-  posts.length = 0;
-  transactions.length = 0;
-  subscriptions.length = 0;
-  unlockedPosts.length = 0;
-
-  console.log("Demo reset triggered via /api/admin/reset-demo");
-  res.json({ success: true, message: "Demo reset complete" });
-});
-
-
 // ✅ 4) Earnings summary for a creator
 app.get("/api/creators/:username/earnings", (req, res) => {
   const username = req.params.username.toLowerCase();
@@ -831,19 +807,19 @@ app.get("/api/creators/:username/earnings", (req, res) => {
 });
 
 //
-// 🔥 MVP ADMIN RESET ENDPOINT
+// 🔥 SINGLE ADMIN RESET ENDPOINT
 //
-app.post("/api/admin/reset-mvp", (req, res) => {
-  // You can pass key either as:
-  //  - query:  /api/admin/reset-mvp?key=SECRET
-  //  - header: x-admin-reset-key: SECRET
-  const key = req.query.key || req.headers["x-admin-reset-key"];
+app.post("/api/admin/reset", (req, res) => {
+  const key =
+    req.query.key ||
+    (req.body && req.body.key) ||
+    req.headers["x-admin-reset-key"];
 
   if (!process.env.ADMIN_RESET_KEY || key !== process.env.ADMIN_RESET_KEY) {
     return res.status(403).json({ error: "Forbidden" });
   }
 
-  // Clear all in-memory stores
+  // Clear all in-memory data
   users.length = 0;
   creators.length = 0;
   posts.length = 0;
@@ -851,15 +827,14 @@ app.post("/api/admin/reset-mvp", (req, res) => {
   subscriptions.length = 0;
   unlockedPosts.length = 0;
 
-  console.log("🔄 MVP data reset via /api/admin/reset-mvp");
+  console.log("🔄 Admin reset triggered via /api/admin/reset");
 
   res.json({
     success: true,
-    message: "All in-memory MVP data cleared.",
+    message: "All in-memory data cleared.",
   });
 });
 
 app.listen(PORT, () => {
   console.log(`Faniko backend running on http://localhost:${PORT}`);
 });
-
