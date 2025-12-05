@@ -165,7 +165,7 @@ function seedDemoData() {
       description:
         "Todays video i will show you how to draw realistic sketch of human eyes",
       createdAt: now,
-      mediaFilename: "Recording 2025-12-05 162739.mp4",
+      mediaFilename: "EyeDrawing.mp4",   // 👈 back to mp4 with new name
       mediaMime: "video/mp4",
       likes: 0,
       likedBy: [],
