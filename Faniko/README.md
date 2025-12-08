@@ -4,6 +4,7 @@ Mikhail Simanian — Full-Stack Developer / Student Entrepreneur
 📍 Ottawa, Canada, Carleton University
 📧 miksim077@gmail.com
 
+Disclaimer# First start up will take 30 seconds to fully load
 Live Demo: 
 Front end->  https://faniko-startup-frontend-gflu.onrender.com/
 
